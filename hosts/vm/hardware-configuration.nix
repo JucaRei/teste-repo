@@ -17,14 +17,51 @@
 {
   imports = [ ];
 
-  boot.initrd.availableKernelModules = [ "ata_piix" "xhci_pci" "sd_mod" "sr_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ ];
+  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+  boot.kernelModules = [ "kvm-intel" "z3fold" "crc32c-intel" "lz4hc" "lz4hc_compress" "zram" ];
   boot.extraModulePackages = [ ];
 
+  ### BTRFS ###
   fileSystems."/" =
-    { device = "/dev/disk/by-label/nixos";
-      fsType = "ext4";
+    { device = "/dev/disk/by-label/NIXOS";
+      fsType = "btrfs";
+      options = [ "subvol=@" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
+    };
+
+  fileSystems."/home" =
+    { device = "/dev/disk/by-label/NIXOS";
+      fsType = "btrfs";
+      options = [ "subvol=@home" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
+    };
+
+  fileSystems."/.snapshots" =
+    { device = "/dev/disk/by-label/NIXOS";
+      fsType = "btrfs";
+      options = [ "subvol=@snapshots" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
+    };
+
+  fileSystems."/swap" =
+    { device = "/dev/disk/by-label/NIXOS";
+      fsType = "btrfs";
+      options = [ "subvol=@swap" ];
+    };
+
+  fileSystems."/var/tmp" =
+    { device = "/dev/disk/by-label/NIXOS";
+      fsType = "btrfs";
+      options = [ "subvol=@tmp" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
+    };
+
+  fileSystems."/nix" =
+    { device = "/dev/disk/by-label/NIXOS";
+      fsType = "btrfs";
+      options = [ "subvol=@nix" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
+    };
+
+  fileSystems."/boot/efi" =
+    { device = "/dev/disk/by-label/GRUB";
+      fsType = "vfat";
+      options = [ "rw" "defaults" "noatime" "nodiratime" ];
     };
 
   swapDevices = [ ];
