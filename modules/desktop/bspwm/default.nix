@@ -28,8 +28,8 @@ in
     xserver = {
       enable = true;
 
-      layout = "us";                              # Keyboard layout & €-sign
-      xkbOptions = "eurosign:e";
+      layout = "br";                              # Keyboard layout & €-sign
+      # xkbOptions = "eurosign:e";
       libinput = {
         enable = true;
         touchpad = {
@@ -100,8 +100,8 @@ in
 
       resolutions = [
         { x = 1920; y = 1080; }
-        { x = 1600; y = 900; }
-        { x = 3840; y = 2160; }
+        # { x = 1600; y = 900; }
+        # { x = 3840; y = 2160; }
       ];
     };
   };
