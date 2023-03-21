@@ -48,30 +48,30 @@ with host; {
             #override-redirect = "true";
             wm-restack = "bspwm";
           };
-          "bar/sec" = {
-            monitor = "${secondMonitor}";
-            width = "100%";
-            height = 15;
-            background = "#00000000";
-            foreground = "#ccffffff";
+          # "bar/sec" = {
+          #   monitor = "${secondMonitor}";
+          #   width = "100%";
+          #   height = 15;
+          #   background = "#00000000";
+          #   foreground = "#ccffffff";
 
-            offset-y = 2;
-            spacing = "1.5";
-            padding-right = 2;
-            module-margin-left = 1;
-            #module-margin-right = "0.5";
+          #   offset-y = 2;
+          #   spacing = "1.5";
+          #   padding-right = 2;
+          #   module-margin-left = 1;
+          #   #module-margin-right = "0.5";
 
-            font-0 = "SourceCodePro:size=10";     # Icons
-            font-1 = "FontAwesome6Free:style=Solid:size=8";
-            font-2 = "FontAwesome6Free:style=Regular:size=8";
-            font-3 = "FontAwesome6Brands:style=Regular:size=8";
-            font-4 = "FiraCodeNerdFont:size=10";
-            modules-left = "logo bspwm";
-            modules-right = "sink volume pad date";
+          #   font-0 = "SourceCodePro:size=10";     # Icons
+          #   font-1 = "FontAwesome6Free:style=Solid:size=8";
+          #   font-2 = "FontAwesome6Free:style=Regular:size=8";
+          #   font-3 = "FontAwesome6Brands:style=Regular:size=8";
+          #   font-4 = "FiraCodeNerdFont:size=10";
+          #   modules-left = "logo bspwm";
+          #   modules-right = "sink volume pad date";
 
-            #override-redirect = "true";
-            wm-restack = "bspwm";
-          };
+          #   #override-redirect = "true";
+          #   wm-restack = "bspwm";
+          # };
           "module/memory" = {                     # RAM
             type = "internal/memory";
             format = "<label>"; #<bar-used>";

@@ -73,8 +73,8 @@
       nixosConfigurations = (                                               # NixOS configurations
         import ./hosts {                                                    # Imports ./hosts/default.nix
           inherit (nixpkgs) lib;
-          # inherit inputs nixpkgs home-manager nur user location doom-emacs hyprland plasma-manager;   # Also inherit home-manager so it does not need to be defined here.
-          inherit inputs nixpkgs nix stable unstable nixos-vscode-server home-manager nur user location plasma-manager;
+          inherit inputs nixpkgs home-manager nur user location doom-emacs hyprland plasma-manager;   # Also inherit home-manager so it does not need to be defined here.
+          # inherit inputs nixpkgs nix stable unstable nixos-vscode-server home-manager nur user location plasma-manager;
         }
       );
 
