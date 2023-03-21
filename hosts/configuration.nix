@@ -20,33 +20,32 @@
 
   users.users.${user} = {                   # System User
     isNormalUser = true;
+    uid = 1000;
+    initialPassword = "teste";
     extraGroups = [ "wheel" "video" "audio" "camera" "networkmanager" "lp" "scanner" "kvm" "libvirtd" "plex" ];
     shell = pkgs.zsh;                       # Default shell
   };
-  security.sudo.wheelNeedsPassword = false; # User does not need to give password when using sudo.
 
-  time.timeZone = "Europe/Brussels";        # Time zone and internationalisation
+
+  time.timeZone = "America/Sao_Paulo";        # Time zone and internationalisation
   i18n = {
     defaultLocale = "en_US.UTF-8";
     extraLocaleSettings = {                 # Extra locale settings that need to be overwritten
-      LC_TIME = "nl_BE.UTF-8";
-      LC_MONETARY = "nl_BE.UTF-8";
+      LC_TIME = "pt_BR.UTF-8";
+      LC_MONETARY = "pt_BR.UTF-8";
     };
   };
 
   console = {
     font = "Lat2-Terminus16";
-    keyMap = "us";                          # or us/azerty/etc
+    keyMap = "br-abnt2";                          # or us/azerty/etc
   };
 
-  security.rtkit.enable = true;
-  security.polkit.enable = true;
-  #sound = {                                # Deprecated due to pipewire
-  #  enable = true;
-  #  mediaKeys = {
-  #    enable = true;
-  #  };
-  #};
+  security = {
+    rtkit.enable = true;
+    polkit.enable = true;
+    sudo.wheelNeedsPassword = false; # User does not need to give password when using sudo.
+  };
 
   fonts.fonts = with pkgs; [                # Fonts
     carlito                                 # NixOS
@@ -69,15 +68,21 @@
       VISUAL = "nvim";
     };
     systemPackages = with pkgs; [           # Default packages installed system-wide
-      #vim
-      #git
+      vim
+      git
       killall
       nano
       pciutils
       usbutils
       wget
+      duf
+      neofetch
     ];
   };
+
+  ### Virt-manager
+  # virtualisation.libvirtd.enable = true; 
+  # programs.dconf.enable = true; 
 
   services = {
     printing = {                                # Printing and drivers for TS5300
@@ -147,12 +152,42 @@
       keep-derivations      = true
     '';
   };
-  nixpkgs.config.allowUnfree = true;        # Allow proprietary software.
+   nixpkgs.config = {
+    allowUnsupportedSystem = true; # For permanently allowing unsupported packages to be built.
+    allowUnfree = true; # unfree packages
+    # allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [   # allow only selected unfree packages
+    #   "roon-server"
+    #   "vscode"
+    # ];
+    # permittedInsecurePackages = [
+    # "balenaetcher"
+    # ];
+    # NIXPKGS_ALLOW_INSECURE = 1;
+
+    # overlays = [
+    #   (self: super: {
+    #     discord = super.discord.overrideAttrs (
+    #       _: { src = builtins.fetchTarball {
+    #         url = "https://discord.com/api/download?platform=linux&format=tar.gz"
+    #         ;
+    #         sha256 =
+    #         "0000000000000000000000000000000000000000000000000000";
+    #       };}
+    #     );
+    #   })
+    # ];
+  };
 
   system = {                                # NixOS settings
     autoUpgrade = {                         # Allow auto update (not useful in flakes)
       enable = true;
-      channel = "https://nixos.org/channels/nixos-unstable";
+      # channel = "https://nixos.org/channels/nixos-unstable";
+      channel = "https://nixos.org/channels/nixos-22.11";
+      dates = "22:00";
+      flags = [
+        "--update-input" "nixpkgs"
+      ];
+      # allowReboot = true;
     };
     stateVersion = "22.11";
   };

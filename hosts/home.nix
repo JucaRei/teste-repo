@@ -30,23 +30,27 @@
       tldr              # Helper
 
       # Video/Audio
-      feh               # Image Viewer
+      # feh               # Image Viewer
       mpv               # Media Player
       pavucontrol       # Audio Control
-      plex-media-player # Media Player
-      vlc               # Media Player
-      stremio           # Media Streamer
+      # plex-media-player # Media Player
+      # vlc               # Media Player
+      # stremio           # Media Streamer
 
       # Apps
       appimage-run      # Runs AppImages on NixOS
-      firefox           # Browser
-      google-chrome     # Browser
       remmina           # XRDP & VNC Client
+      firefox           # Browser
+      # google-chrome     # Browser
+      (vivaldi.override {
+        proprietaryCodecs = true;
+        enableWidevine = true;
+      })
 
       # File Management
-      gnome.file-roller # Archive Manager
-      okular            # PDF Viewer
-      pcmanfm           # File Manager
+      # gnome.file-roller # Archive Manager
+      # okular            # PDF Viewer
+      # pcmanfm           # File Manager
       p7zip             # Zip Encryption
       rsync             # Syncer - $ rsync -r dir1/ dir2/
       unzip             # Zip Files

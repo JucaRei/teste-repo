@@ -103,7 +103,19 @@
   #  ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
-  hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware = {
+    bluetooth = {
+      enable = true;
+      hsphfpd.enable = true;  # HSP & HFP daemon
+      settings = {
+        General = {
+          Enable = "Source,Sink,Media,Socket";
+        };
+      };
+    };
+    # pulseaudio.enable = true;
+    cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+  };
 
   networking = {
     useDHCP = false;                            # Deprecated

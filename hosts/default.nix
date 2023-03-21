@@ -29,15 +29,15 @@ in
     specialArgs = {
       inherit inputs user location;
       host = {
-        hostName = "desktop";
-        mainMonitor = "HDMI-A-3";
-        secondMonitor = "DP-1";
+        hostName = "nitro";
+        mainMonitor = "eDP-1";
+        secondMonitor = "HDMI-1-0";
       };
     };                                                      # Pass flake variable
     modules = [                                             # Modules that are used.
       nur.nixosModules.nur
       hyprland.nixosModules.default
-      ./desktop
+      ./nitro
       ./configuration.nix
 
       home-manager.nixosModules.home-manager {              # Home-Manager module that is used.
@@ -115,7 +115,7 @@ in
           host = {
             hostName = "work";
             mainMonitor = "eDP-1";
-            secondMonitor = "HDMI-A-2";
+            secondMonitor = "HDMI-1-0";
           };
         };
         home-manager.users.${user} = {

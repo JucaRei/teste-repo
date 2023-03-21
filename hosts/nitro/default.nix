@@ -21,12 +21,13 @@
 { pkgs, lib, user, ... }:
 
 {
-  imports =                                               # For now, if applying to other system, swap files
-    [(import ./hardware-configuration.nix)] ++            # Current system hardware config @ /etc/nixos/hardware-configuration.nix
-    [(import ../../modules/programs/games.nix)] ++        # Gaming
-    [(import ../../modules/desktop/hyprland/default.nix)] ++ # Window Manager
-    (import ../../modules/desktop/virtualisation) ++      # Virtual Machines & VNC
-    (import ../../modules/hardware);                      # Hardware devices
+  imports =                                                   # For now, if applying to other system, swap files
+    [(import ./hardware-configuration.nix)] ++                # Current system hardware config @ /etc/nixos/hardware-configuration.nix
+    [(import ../../modules/programs/games.nix)] ++            # Gaming
+    [(import ./nvidia.nix)] ++                                # Nvidia
+    [(import ../../modules/desktop/hyprland/default.nix)] ++  # Window Manager
+    (import ../../modules/desktop/virtualisation) ++          # Virtual Machines & VNC
+    (import ../../modules/hardware);                          # Hardware devices
 
   boot = {                                      # Boot options
     kernelPackages = pkgs.linuxPackages_latest;
@@ -62,12 +63,14 @@
     systemPackages = with pkgs; [               # This is because some options need to be configured.
       discord
       #plex
+      neofetch
+      duf
+      exa
       simple-scan
       x11vnc
-      wacomtablet
     ];
-    variables = {
-      LIBVA_DRIVER_NAME = "i965";
+    # variables = {
+      # LIBVA_DRIVER_NAME = "i965";
     };
   };
 

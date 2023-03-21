@@ -11,11 +11,12 @@
         enable = true;
         settings = {
           General = {                               # Settings
-            savePath = "/home/${user}/";
+            savePath = "/home/${user}/Pictures/Screenshots";
             saveAsFileExtension = ".png";
             uiColor = "#2d0096";
             showHelp = "false";
-            disabledTrayIcon = "true";              # Hide from systray
+            # disabledTrayIcon = "true";              # Hide from systray
+            disabledTrayIcon = "false";              
           };
         };
       };
