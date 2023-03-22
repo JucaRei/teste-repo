@@ -12,7 +12,7 @@
 #               └─ bspwm.nix
 #
 
-{ pkgs, lib, user, config, ... }:
+{ lib, user, config, ... }:
 
 let 
  user = "juca";
