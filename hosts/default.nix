@@ -6,7 +6,7 @@
 #       ├─ default.nix *
 #       ├─ configuration.nix
 #       ├─ home.nix
-#       └─ ./desktop OR ./laptop OR ./work OR ./vm
+#       └─ ./desktop OR ./laptop OR ./oldmac OR ./vm
 #            ├─ ./default.nix
 #            └─ ./home.nix 
 #
@@ -35,8 +35,8 @@ in
       };
     };                                                      # Pass flake variable
     modules = [                                             # Modules that are used.
-      nur.nixosModules.nur
-      hyprland.nixosModules.default
+      # nur.nixosModules.nur
+      # hyprland.nixosModules.default
       ./nitro
       ./configuration.nix
 
@@ -47,7 +47,7 @@ in
           inherit user doom-emacs;
           host = {
             hostName = "desktop";     #For Xorg iGPU  | Videocard 
-            mainMonitor = "HDMI-A-3"; #HDMIA3         | HDMI-A-1
+            mainMonitor = "HDMI-1-0"; #HDMIA3         | HDMI-A-1
             secondMonitor = "DP-1";   #DP1            | DisplayPort-1
           };
         };                                                  # Pass flake variable
@@ -61,18 +61,18 @@ in
     ];
   };
 
-  laptop = lib.nixosSystem {                                # Laptop profile
+  mcbair = lib.nixosSystem {                                # mcbair profile
     inherit system;
     specialArgs = {
       inherit inputs user location;
       host = {
-        hostName = "laptop";
+        hostName = "mcbair";
         mainMonitor = "eDP-1";
       };
     };
     modules = [
       hyprland.nixosModules.default
-      ./laptop
+      ./mcbair
       ./configuration.nix
 
       home-manager.nixosModules.home-manager {
@@ -81,30 +81,29 @@ in
         home-manager.extraSpecialArgs = {
           inherit user;
           host = {
-            hostName = "laptop";
+            hostName = "mcbair";
             mainMonitor = "eDP-1";
           };
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)] ++ [(import ./laptop/home.nix)];
+          imports = [(import ./home.nix)] ++ [(import ./mcbair/home.nix)];
         };
       }
     ];
   };
 
-  work = lib.nixosSystem {                                  # Work profile
+  oldmac = lib.nixosSystem {                                  # oldmac profile
     inherit system;
     specialArgs = {
       inherit inputs user location;
       host = {
-        hostName = "work";
-        mainMonitor = "eDP-1";
-        secondMonitor = "HDMI-A-2";
+        hostName = "oldmac";
+        mainMonitor = "LVDS-1";
       };
     };
     modules = [
-      hyprland.nixosModules.default
-      ./work
+      # hyprland.nixosModules.default
+      ./oldmac
       ./configuration.nix
 
       home-manager.nixosModules.home-manager {
@@ -113,13 +112,12 @@ in
         home-manager.extraSpecialArgs = {
           inherit user;
           host = {
-            hostName = "work";
-            mainMonitor = "eDP-1";
-            secondMonitor = "HDMI-1-0";
+            hostName = "oldmac";
+            mainMonitor = "LVDS-1";
           };
         };
         home-manager.users.${user} = {
-          imports = [(import ./home.nix)] ++ [(import ./work/home.nix)];
+          imports = [(import ./home.nix)] ++ [(import ./oldmac/home.nix)];
         };
       }
     ];
