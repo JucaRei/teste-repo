@@ -18,11 +18,11 @@
     xserver = {
       enable = true;
 
-      layout = "us";                              # Keyboard layout & €-sign
-      xkbOptions = "eurosign:e";
+      layout = "br";                              # Keyboard layout & €-sign
+      # xkbOptions = "eurosign:e";
       libinput.enable = true;
-      modules = [ pkgs.xf86_input_wacom ];        # Both needed for wacom tablet usage
-      wacom.enable = true;
+      # modules = [ pkgs.xf86_input_wacom ];        # Both needed for wacom tablet usage
+      # wacom.enable = true;
 
       displayManager.gdm.enable = true;           # Display Manager
       desktopManager.gnome.enable = true;         # Window Manager

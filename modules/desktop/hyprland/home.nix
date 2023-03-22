@@ -6,7 +6,7 @@
 #   │   └─ ./<host>
 #   │       └─ home.nix
 #   └─ ./modules
-#       └─ ./desktop
+#       └─ ./nitro
 #           └─ ./hyprland
 #               └─ home.nix *
 #
@@ -15,7 +15,7 @@
 
 let
   touchpad = with host;
-    if hostName == "laptop" || hostName == "work" then ''
+    if hostName == "mcbair" || hostName == "nitro" then ''
         touchpad {
           natural_scroll=true
           middle_button_emulation=true
@@ -24,7 +24,7 @@ let
       }
       '' else "";
   gestures = with host;
-    if hostName == "laptop" || hostName == "work" then ''
+    if hostName == "mcbair" || hostName == "nitro" then ''
       gestures {
         workspace_swipe=true
         workspace_swipe_fingers=3
@@ -32,7 +32,7 @@ let
       }
     '' else "";
   workspaces = with host;
-    if hostName == "desktop" then ''
+    if hostName == "nitro" then ''
       monitor=${toString mainMonitor},1920x1080@60,1920x0,1
       monitor=${toString secondMonitor},1920x1080@60,0x0,1
     '' else if hostName == "work" then ''
@@ -42,7 +42,7 @@ let
       monitor=${toString mainMonitor},1920x1080@60,0x0,1
     '';
   monitors = with host;
-    if hostName == "desktop" || hostName == "work" then ''
+    if hostName == "nitro" || hostName == "work" then ''
       workspace=${toString mainMonitor},1
       workspace=${toString secondMonitor},6
 
@@ -58,7 +58,7 @@ let
       wsbind=10,${toString secondMonitor}
     '' else "";
   execute = with host;
-    if hostName == "desktop" then ''
+    if hostName == "nitro" then ''
       #exec-once=${pkgs.mpvpaper}/bin/mpvpaper -sf -v -o "--loop --panscan=1" '*' $HOME/.config/wall.mp4  # Moving wallpaper (small performance hit)
       exec-once=${pkgs.swaybg}/bin/swaybg -m center -i $HOME/.config/wall
     '' else if hostName == "work" then ''
@@ -198,7 +198,7 @@ let
     windowrule=move 75% 75% ,title:^(Picture-in-Picture)$
     windowrule=size 24% 24% ,title:^(Picture-in-Picture)$
 
-    exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP
+    exec-once=dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_nitro
     exec-once=${pkgs.waybar}/bin/waybar
     exec-once=${pkgs.blueman}/bin/blueman-applet
     ${execute}
@@ -233,7 +233,7 @@ in
     show-failed-attempts = true;
   };
 
-  services.swayidle = with host; if hostName == "laptop" || hostName == "work" then {
+  services.swayidle = with host; if hostName == "mcbair" || hostName == "work" then {
     enable = true;
     events = [
       { event = "before-sleep"; command = "${pkgs.swaylock}/bin/swaylock -f"; }
@@ -242,7 +242,7 @@ in
     timeouts = [
       { timeout= 300; command = "${pkgs.swaylock}/bin/swaylock -f";}
     ];
-    systemdTarget = "xdg-desktop-portal-hyprland.service";
+    systemdTarget = "xdg-nitro-portal-hyprland.service";
   } else {
     enable = false;
   };

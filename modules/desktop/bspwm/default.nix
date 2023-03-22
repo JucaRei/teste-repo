@@ -15,7 +15,7 @@
 
 let
   monitor = with host;
-    if hostName == "desktop" then
+    if hostName == "nitro" then
       "${pkgs.xorg.xrandr}/bin/xrandr --output ${secondMonitor} --mode 1920x1080 --pos 0x0 --rotate normal --output ${mainMonitor} --primary --mode 1920x1080 --pos 1920x0 --rotate normal"
     else if hostName == "laptop" || hostName == "vm" then
       "${pkgs.xorg.xrandr}/bin/xrandr --mode 1920x1080 --pos 0x0 --rotate normal"
@@ -41,8 +41,8 @@ in
           disableWhileTyping = true;
         };
       };
-      modules = [ pkgs.xf86_input_wacom ];        # Both needed for wacom tablet usage
-      wacom.enable = true;
+      # modules = [ pkgs.xf86_input_wacom ];        # Both needed for wacom tablet usage
+      # wacom.enable = true;
 
       displayManager = {                          # Display Manager
         lightdm = {

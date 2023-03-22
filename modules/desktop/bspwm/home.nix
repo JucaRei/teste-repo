@@ -6,7 +6,7 @@
 #   │   └─ ./<host>
 #   │       └─ home.nix
 #   ├─ ./modules
-#   │   └─ ./desktop
+#   │   └─ ./nitro
 #   │       └─ ./bspwm
 #   │           └─ home.nix *
 #   └─ ./services
@@ -45,7 +45,7 @@ let
 
   extraConf = with host; builtins.replaceStrings [ "WORKSPACES" ]
   [
-    (if hostName == "desktop" then ''
+    (if hostName == "nitro" then ''
       bspc monitor ${mainMonitor} -d 1 2 3 4 5
       bspc monitor ${secondMonitor} -d 6 7 8 9 0
       bspc wm -O ${mainMonitor} ${secondMonitor}
@@ -65,13 +65,13 @@ in
     windowManager = {
       bspwm = {
         enable = true;
-        monitors = with host; if hostName == "desktop" then {
+        monitors = with host; if hostName == "nitro" then {
           ${mainMonitor} = [ "1" "2" "3" "4" "5" ];
           ${secondMonitor} = [ "6" "7" "8" "9" "0" ];
         } else {};                              # Multiple Monitors
         rules = {                               # Specific rules for apps - use xprop
           "Emacs" = {
-            desktop = "3";
+            nitro = "3";
             follow = true;
             state = "tiled";
           };
@@ -80,11 +80,11 @@ in
             sticky = true;
           };
           "libreoffice" = {
-            desktop = "3";
+            nitro = "3";
             follow = true;
           };
           "Lutris" = {
-            desktop = "5";
+            nitro = "5";
             follow = true;
           };
           "Pavucontrol" = {
@@ -95,7 +95,7 @@ in
             state = "floating";
           };
           "plexmediaplayer" = {
-            desktop = "4";
+            nitro = "4";
             follow= true;
             state = "fullscreen";
           };
@@ -108,7 +108,7 @@ in
             sticky = true;
           };
           "Steam" = {
-            desktop = "5";
+            nitro = "5";
             #follow = true;
           };
         };

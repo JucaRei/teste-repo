@@ -13,7 +13,7 @@
 
 { config, lib, pkgs, host, ... }:
 let
-  # exec = with host; if hostName == "work" then "exec nvidia-offload Hyprland" else "exec Hyprland"; # Starting Hyprland with nvidia (bit laggy so disabling)
+  # exec = with host; if hostName == "nitro" then "exec nvidia-offload Hyprland" else "exec Hyprland"; # Starting Hyprland with nvidia (bit laggy so disabling)
   exec = "exec Hyprland";
 in
 {
@@ -33,7 +33,7 @@ in
       XDG_SESSION_TYPE="wayland";
       XDG_SESSION_DESKTOP="Hyprland";
     };
-    sessionVariables = with host; if hostName == "work" then {
+    sessionVariables = with host; if hostName == "nitro" then {
       GBM_BACKEND = "nvidia-drm";
       __GL_GSYNC_ALLOWED = "0";
       __GL_VRR_ALLOWED = "0";
@@ -75,7 +75,7 @@ in
   programs = {
     hyprland = {
       enable = true;
-      #nvidiaPatches = with host; if hostName == "work" then true else false;
+      #nvidiaPatches = with host; if hostName == "nitro" then true else false;
     };
   };
 }
