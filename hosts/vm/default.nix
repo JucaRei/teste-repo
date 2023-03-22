@@ -12,7 +12,7 @@
 #               └─ bspwm.nix
 #
 
-{ config, pkgs, ... }:
+{ pkgs, lib, user, config, ... }:
 
 {
   #################################
