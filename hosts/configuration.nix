@@ -81,6 +81,7 @@ in
       wget
       duf
       neofetch
+      cifs-utils
     ];
   };
 
@@ -110,25 +111,27 @@ in
     samba = {                                   
       enable = true;                            # Don't forget to set a password:  $ smbpasswd -a <user>
       shares = {
-        share = {
-          "path" = "/home/${user}";
+        plublic = {
+          "path" = "/home/${user}/Samba";
           "guest ok" = "yes";
+          "create mask" = "0644";
+          "directory mask" = "0755";
           "read only" = "no";
         };
-        extraConfig = ''
-          workgroup = WORKGROUP
-          server string = smbnix
-          netbios name = smbnix
-          security = user 
-          #use sendfile = yes
-          min protocol =  NT1
-          #max protocol = smb2
-          # note: localhost is the ipv6 localhost ::1
-          hosts allow = 192.168.1. 127.0.0.1 localhost
-          # hosts deny = 0.0.0.0/0
-          guest account = nobody
-          map to guest = bad user
-        '';
+      extraConfig = ''
+        workgroup = WORKGROUP
+        server string = smbnix
+        netbios name = smbnix
+        security = user 
+        #use sendfile = yes
+        min protocol =  NT1
+        #max protocol = smb2
+        # note: localhost is the ipv6 localhost ::1
+        hosts allow = 192.168.1. 127.0.0.1 localhost
+        # hosts deny = 0.0.0.0/0
+        guest account = nobody
+        map to guest = bad user
+      '';
       };
       openFirewall = true;
     };
