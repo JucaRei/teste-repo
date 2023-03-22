@@ -136,8 +136,8 @@
     interfaces = {
       enp1s0.useDHCP = true;
     };
-  };
 
   hardware.cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   #virtualisation.virtualbox.guest.enable = true;     #currently disabled because package is broken
+  };
 }
