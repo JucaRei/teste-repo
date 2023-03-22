@@ -109,15 +109,16 @@ in
 
     ## SAMBA File Sharing over local network                     
     samba = {                                   
-      enable = true;                            # Don't forget to set a password:  $ smbpasswd -a <user>
-      shares = {
-        plublic = {
+      enable = true;  
+      shares = {                          # Don't forget to set a password:  $ smbpasswd -a <user>
+        public = {
           "path" = "/home/${user}/Samba";
           "guest ok" = "yes";
           "create mask" = "0644";
           "directory mask" = "0755";
           "read only" = "no";
         };
+      };
       extraConfig = ''
         workgroup = WORKGROUP
         server string = smbnix
@@ -132,7 +133,6 @@ in
         guest account = nobody
         map to guest = bad user
       '';
-      };
       openFirewall = true;
     };
 
