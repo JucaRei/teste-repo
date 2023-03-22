@@ -14,10 +14,6 @@
 
 { pkgs, lib, user, config, ... }:
 
-let 
- user = "juca";
-in
-
 {
   #################################
   ### Modules for this machine. ###
@@ -84,91 +80,91 @@ in
   #######################################
   ### Enable Default System Services. ###
   #######################################
-  services = {
+  # services = {
 
-    ## Enable the Desktop Environment.
-    xserver = {
-      enable = true;
+  #   ## Enable the Desktop Environment.
+  #   xserver = {
+  #     enable = true;
 
-      # Default Resolutions
-      resolutions = [ 
-        { x = 1920; y = 1080; }
-        # { x = 1600; y = 900; }
-        # { x = 3840; y = 2160; }
-      ];
+  #     # Default Resolutions
+  #     resolutions = [ 
+  #       { x = 1920; y = 1080; }
+  #       # { x = 1600; y = 900; }
+  #       # { x = 3840; y = 2160; }
+  #     ];
 
-      # Display manager
-      # displayManager = {
-      #   lightdm = {
-      #     enable = true;
-      #     greeters = {
-      #       slick = {
-      #         enable = true;
-      #         theme.name = "Adwaita";
-      #         iconTheme.name = "Adwaita";
-      #       };
-      #     };
-      #   };
-      # };
+  #     # Display manager
+  #     # displayManager = {
+  #     #   lightdm = {
+  #     #     enable = true;
+  #     #     greeters = {
+  #     #       slick = {
+  #     #         enable = true;
+  #     #         theme.name = "Adwaita";
+  #     #         iconTheme.name = "Adwaita";
+  #     #       };
+  #     #     };
+  #     #   };
+  #     # };
       
-      # Desktop Manager
-      # desktopManager = { # any DM you like
-      #   # defaultSession = "xfce"; 
-      #   xfce.enable = true;
-      # };
-      # windowManager.bspwm.enable = true;
+  #     # Desktop Manager
+  #     # desktopManager = { # any DM you like
+  #     #   # defaultSession = "xfce"; 
+  #     #   xfce.enable = true;
+  #     # };
+  #     # windowManager.bspwm.enable = true;
 
-      # Enable touchpad support (enabled default in most desktopManager).
-      libinput = {
-        enable = true;
-        touchpad.tapping = true;
-        # naturalScrolling = true;
-        # ...
-      };
-    };
+  #     # Enable touchpad support (enabled default in most desktopManager).
+  #     libinput = {
+  #       enable = true;
+  #       touchpad.tapping = true;
+  #       # naturalScrolling = true;
+  #       # ...
+  #     };
+  #   };
 
     ## Enable CUPS to print documents.
-    printing.enable = true;
+    # printing.enable = true;
 
     ## Bluetooth
     # blueman.enable = true; 
 
     ## SAMBA File Sharing over local network                     
-    samba = {                                   
-      enable = true;                            # Don't forget to set a password:  $ smbpasswd -a <user>
-      shares = {
-        share = {
-          "path" = "/home/${user}";
-          "guest ok" = "yes";
-          "read only" = "no";
-        };
-        extraConfig = ''
-          workgroup = WORKGROUP
-          server string = smbnix
-          netbios name = smbnix
-          security = user 
-          #use sendfile = yes
-          min protocol =  NT1
-          #max protocol = smb2
-          # note: localhost is the ipv6 localhost ::1
-          hosts allow = 192.168.1. 127.0.0.1 localhost
-          # hosts deny = 0.0.0.0/0
-          guest account = nobody
-          map to guest = bad user
-        '';
-      };
-      openFirewall = true;
-    };
+    # samba = {                                   
+    #   enable = true;                            # Don't forget to set a password:  $ smbpasswd -a <user>
+    #   shares = {
+    #     share = {
+    #       "path" = "/home/${user}";
+    #       "guest ok" = "yes";
+    #       "read only" = "no";
+    #     };
+    #     extraConfig = ''
+    #       workgroup = WORKGROUP
+    #       server string = smbnix
+    #       netbios name = smbnix
+    #       security = user 
+    #       #use sendfile = yes
+    #       min protocol =  NT1
+    #       #max protocol = smb2
+    #       # note: localhost is the ipv6 localhost ::1
+    #       hosts allow = 192.168.1. 127.0.0.1 localhost
+    #       # hosts deny = 0.0.0.0/0
+    #       guest account = nobody
+    #       map to guest = bad user
+    #     '';
+    #   };
+    #   openFirewall = true;
+    # };
     
     ## Enable gvfs
-    gvfs = {
-      enable = true;
-      # package = lib.mkForce pkgs.gnome3.gvfs;    #needed for xfce Thunar
-    };
+    # gvfs = {
+    #   enable = true;
+    #   # package = lib.mkForce pkgs.gnome3.gvfs;    #needed for xfce Thunar
+    # };
 
     ## Openssh
-    openssh = {
-      enable = true;
+    # openssh = {
+      # enable = true;
       # permitRootLogin = "no";
       # passwordAuthentication = true;
       # hostKeys = [ 
@@ -182,8 +178,8 @@ in
       #     bits = 4096;
       #   }
       # ];
-    };
-  };
+    # };
+  # };
 
   ############################
   ### Define user accounts ###
@@ -234,38 +230,38 @@ in
   ####################
   ### System confs ###
   ####################
-  system = {
-    stateVersion = "22.11"; # Did you read the comment?
-    autoUpgrade = {
-      enable = true;
-      operation = "switch";
-      # channel = "https://nixos.org/channels/nixos-22.11";
-      dates = "22:00";
-      # flake = "/server";
-      flags = [
-        "--update-input" "nixpkgs" "--commit-lock-file" 
-    ];
-    # allowReboot = true;
-    };
-  };
+  # system = {
+  #   stateVersion = "22.11"; # Did you read the comment?
+  #   autoUpgrade = {
+  #     enable = true;
+  #     operation = "switch";
+  #     # channel = "https://nixos.org/channels/nixos-22.11";
+  #     dates = "22:00";
+  #     # flake = "/server";
+  #     flags = [
+  #       "--update-input" "nixpkgs" "--commit-lock-file" 
+  #   ];
+  #   # allowReboot = true;
+  #   };
+  # };
 
   ###################
   ### NIX CONFIGS ###
   ###################
 
-  nix = {
-    settings.auto-optimise-store = true;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 6d";
-    };
-    # Flakes
-    # package = pkgs.nixFlakes;
-    extraOptions = ''
-      experimental-features = nix-command flakes
-      keep-outputs = true
-      keep-derivations = true
-    '';
-  };
+  # nix = {
+  #   settings.auto-optimise-store = true;
+  #   gc = {
+  #     automatic = true;
+  #     dates = "weekly";
+  #     options = "--delete-older-than 6d";
+  #   };
+  #   # Flakes
+  #   # package = pkgs.nixFlakes;
+  #   extraOptions = ''
+  #     experimental-features = nix-command flakes
+  #     keep-outputs = true
+  #     keep-derivations = true
+  #   '';
+  # };
 }

@@ -13,6 +13,10 @@
 
 { config, lib, pkgs, inputs, user, ... }:
 
+let 
+ user = "juca";
+in
+
 {
   imports =
     (import ../modules/editors) ++          # Native doom emacs instead of nix-community flake
@@ -85,6 +89,56 @@
   # programs.dconf.enable = true; 
 
   services = {
+
+    ## Enable the Desktop Environment.
+    xserver = {
+      enable = true;
+      resolutions = [ 
+        { x = 1920; y = 1080; }
+        # { x = 1600; y = 900; }
+        # { x = 3840; y = 2160; }
+      ];
+      libinput = {
+        enable = true;
+        touchpad.tapping = true;
+        # naturalScrolling = true;
+        # ...
+      };
+    };
+
+    ## SAMBA File Sharing over local network                     
+    samba = {                                   
+      enable = true;                            # Don't forget to set a password:  $ smbpasswd -a <user>
+      shares = {
+        share = {
+          "path" = "/home/${user}";
+          "guest ok" = "yes";
+          "read only" = "no";
+        };
+        extraConfig = ''
+          workgroup = WORKGROUP
+          server string = smbnix
+          netbios name = smbnix
+          security = user 
+          #use sendfile = yes
+          min protocol =  NT1
+          #max protocol = smb2
+          # note: localhost is the ipv6 localhost ::1
+          hosts allow = 192.168.1. 127.0.0.1 localhost
+          # hosts deny = 0.0.0.0/0
+          guest account = nobody
+          map to guest = bad user
+        '';
+      };
+      openFirewall = true;
+    };
+
+    ## Enable gvfs
+    gvfs = {
+      enable = true;
+      # package = lib.mkForce pkgs.gnome3.gvfs;    #needed for xfce Thunar
+    };
+
     printing = {                                # Printing and drivers for TS5300
       enable = true;
       #drivers = [ pkgs.cnijfilter2 ];          # There is the possibility cups will complain about missing cmdtocanonij3. I guess this is just an error that can be ignored for now. Also no longer need required since server uses ipp to share printer over network.
@@ -182,11 +236,12 @@
   system = {                                # NixOS settings
     autoUpgrade = {                         # Allow auto update (not useful in flakes)
       enable = true;
+      operation = "switch";
       # channel = "https://nixos.org/channels/nixos-unstable";
       channel = "https://nixos.org/channels/nixos-22.11";
       dates = "22:00";
       flags = [
-        "--update-input" "nixpkgs"
+        "--update-input" "nixpkgs" "--commit-lock-file" 
       ];
       # allowReboot = true;
     };
