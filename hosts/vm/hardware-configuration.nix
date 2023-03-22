@@ -39,34 +39,36 @@
     # };
 
     ### Grub
-    grub = {
-      enable = true;
-      version = 2;
-      # default = 0;              # "saved";
-      device = "nodev";           # device = "/dev/sda"; or "nodev" for efi only
-      # device = "/dev/vda";      # legacy
-      efiSupport = true;
-      efiInstallAsRemovable = true;
-      configurationLimit = 5;     # do not store more than 5 gen backups
-      # zfsSupport = true;        # enable zfs
-      # copyKernels = true;       # https://nixos.wiki/wiki/NixOS_on_ZFS
-      useOSProber = false;         # check for other systems
-      fsIdentifier = "label";     # mount devices config using label
-      gfxmodeEfi = "1920x1080";
-      # gfxmodeBios = "1920x1080";
-      # trustedBoot.systemHasTPM = "YES_TPM_is_activated"
-      # trustedBoot.enable = true;
-      # extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
-      # theme = "";               # set theme
-      # enableCryptodisk = true;  # 
-    };
-    efi = {
-      efiSysMountPoint = "/boot/efi";
-      canTouchEfiVariables = false;
-    };
-    timeout = 6;
+    loader = {
+      grub = {
+        enable = true;
+        version = 2;
+        # default = 0;              # "saved";
+        device = "nodev";           # device = "/dev/sda"; or "nodev" for efi only
+        # device = "/dev/vda";      # legacy
+        efiSupport = true;
+        efiInstallAsRemovable = true;
+        configurationLimit = 5;     # do not store more than 5 gen backups
+        # zfsSupport = true;        # enable zfs
+        # copyKernels = true;       # https://nixos.wiki/wiki/NixOS_on_ZFS
+        useOSProber = false;         # check for other systems
+        fsIdentifier = "label";     # mount devices config using label
+        gfxmodeEfi = "1920x1080";
+        # gfxmodeBios = "1920x1080";
+        # trustedBoot.systemHasTPM = "YES_TPM_is_activated"
+        # trustedBoot.enable = true;
+        # extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+        # theme = "";               # set theme
+        # enableCryptodisk = true;  # 
+      };
+    
+      efi = {
+        efiSysMountPoint = "/mnt/boot/efi";
+        canTouchEfiVariables = false;
+      };
+      timeout = 6;
     # zfs.requestEncryptionCredentials = true;    
-
+    };
     ### Enable plymouth
     plymouth = {
       theme = "breeze";
