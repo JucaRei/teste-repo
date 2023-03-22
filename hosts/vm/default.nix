@@ -14,6 +14,10 @@
 
 { pkgs, lib, user, config, ... }:
 
+let 
+ user = "juca";
+in
+
 {
   #################################
   ### Modules for this machine. ###
