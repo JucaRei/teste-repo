@@ -6,7 +6,7 @@
 #       ├─ default.nix *
 #       ├─ configuration.nix
 #       ├─ home.nix
-#       └─ ./desktop OR ./laptop OR ./oldmac OR ./vm
+#       └─ ./nitro OR ./laptop OR ./oldmac OR ./vm
 #            ├─ ./default.nix
 #            └─ ./home.nix 
 #
@@ -24,7 +24,7 @@ let
   lib = nixpkgs.lib;
 in
 {
-  desktop = lib.nixosSystem {                               # Desktop profile
+  nitro = lib.nixosSystem {                               # nitro profile
     inherit system;
     specialArgs = {
       inherit inputs user location;
@@ -46,15 +46,15 @@ in
         home-manager.extraSpecialArgs = {
           inherit user doom-emacs;
           host = {
-            hostName = "desktop";     #For Xorg iGPU  | Videocard 
-            mainMonitor = "HDMI-1-0"; #HDMIA3         | HDMI-A-1
-            secondMonitor = "DP-1";   #DP1            | DisplayPort-1
+            hostName = "nitro";     #For Xorg iGPU  | Videocard 
+            mainMonitor = "eDP-1"; #HDMIA3         | HDMI-A-1
+            secondMonitor = "HDMI-1-0";   #DP1            | DisplayPort-1
           };
         };                                                  # Pass flake variable
         home-manager.users.${user} = {
           imports = [
             ./home.nix
-            ./desktop/home.nix
+            ./nitro/home.nix
           ];
         };
       }
@@ -67,7 +67,7 @@ in
       inherit inputs user location;
       host = {
         hostName = "mcbair";
-        mainMonitor = "eDP-1";
+        mainMonitor = "eDP1";
       };
     };
     modules = [
@@ -82,7 +82,7 @@ in
           inherit user;
           host = {
             hostName = "mcbair";
-            mainMonitor = "eDP-1";
+            mainMonitor = "eDP1";
           };
         };
         home-manager.users.${user} = {

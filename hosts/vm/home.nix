@@ -24,6 +24,10 @@
       firefox
       neofetch
       duf
+      (vivaldi.override {
+        proprietaryCodecs = true;
+        enableWidevine = true;
+      })
     ];
   };
 }

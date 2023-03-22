@@ -15,13 +15,75 @@
 
 {
   imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
+    [ 
+      # (modulesPath + "/installer/scan/not-detected.nix")
     ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-intel"];
-  boot.extraModulePackages = with config.boot.kernelPackages; [ ];
+  ### BOOT
+  boot = {
+
+    ### Kernel options
+    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages; # zfs
+    kernel.sysctl = { "vm.vfs_cache_pressure"= 500; "vm.swappiness"=100; "vm.dirty_background_ratio"=1; "vm.dirty_ratio"=50; "dev.i915.perf_stream_paranoid"=0; };
+
+    ### systemd-boot
+    # loader = {                                  # For legacy boot:
+    #   systemd-boot = {
+    #     enable = true;
+    #     configurationLimit = 5;                 # Limit the amount of configurations
+    #   };
+    #   efi.canTouchEfiVariables = true;
+    #   timeout = 6;                              # Grub auto select time
+    # };
+
+    ### Grub
+    grub = {
+      enable = true;
+      version = 2;
+      # default = 0;              # "saved";
+      device = "nodev";           # device = "/dev/sda"; or "nodev" for efi only
+      # device = "/dev/vda";      # legacy
+      efiSupport = true;
+      efiInstallAsRemovable = true;
+      configurationLimit = 5;     # do not store more than 5 gen backups
+      # zfsSupport = true;        # enable zfs
+      # copyKernels = true;       # https://nixos.wiki/wiki/NixOS_on_ZFS
+      useOSProber = true;         # check for other systems
+      fsIdentifier = "label";     # mount devices config using label
+      gfxmodeEfi = "1920x1080";
+      # gfxmodeBios = "1920x1080";
+      # trustedBoot.systemHasTPM = "YES_TPM_is_activated"
+      # trustedBoot.enable = true;
+      extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+      # theme = "";               # set theme
+      # enableCryptodisk = true;  # 
+    };
+    efi = {
+      efiSysMountPoint = "/boot/efi";
+      canTouchEfiVariables = false;
+    };
+    timeout = 6;
+    # zfs.requestEncryptionCredentials = true;    
+
+    ### Enable plymouth
+    plymouth = {
+      theme = "breeze";
+      enable = true;
+    };
+
+    ### Enabled filesystem
+    # supportedFilesystems = [ "vfat" "zfs" ];
+    supportedFilesystems = [ "vfat" "btrfs" ];
+
+    # initrd early load modules
+    initrd = {
+      availableKernelModules = [ "xhci_pci" "ahci" "nvme" "usb_storage" "usbhid" "uas" "sd_mod" ];
+      kernelModules = [ "i915" "nvidia" ];
+    };
+    kernelModules = [ "kvm-intel"];
+    extraModulePackages = with config.boot.kernelPackages; [ ];
+  };
 
   fileSystems."/" =
     { #device = "/dev/disk/by-uuid/80e0d316-954b-4959-8c5d-06be7255a036";
@@ -103,7 +165,14 @@
   #  ];
 
   powerManagement.cpuFreqGovernor = lib.mkDefault "powersave";
+
+  # Enable sound.
+  sound = {
+    enable = true;
+    mediaKeys.enable = true;
+  };
   hardware = {
+    # Bluetooth
     bluetooth = {
       enable = true;
       hsphfpd.enable = true;  # HSP & HFP daemon
@@ -114,41 +183,75 @@
       };
     };
     # pulseaudio.enable = true;
+
+    # Used for scanning with Xsane
+    sane = {                                    
+      enable = true;
+      extraBackends = [ pkgs.sane-airscan ];
+    };
+    opengl = {
+      enable = true;
+      driSupport = true;
+      driSupport32Bit = true;
+      extraPackages = with pkgs; [
+       #intel-media-driver
+        vaapiIntel
+        vaapiVdpau
+        libvdpau-va-gl
+      ];
+    };
+
+    # Firmware Microcode
     cpu.intel.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
   };
 
   networking = {
+    # head -c 8 /etc/machine-id 
+    # networking.hostId = "XXXXXXXX"; # needed for zfs
     useDHCP = false;                            # Deprecated
-    hostName = "desktop";
+    hostName = "nitro";
     enableIPv6 = false;
+    wireless.enable = true;  # Enables wireless support via wpa_supplicant.
     bridges = {                                 # Bridge so interface can be used with virtual machines
       "br0" = {
-        interfaces = [ "enp2s0" ];
+        interfaces = [ "enp1s0" ];
       };
     };
     interfaces = {
-      # enp2s0 = {                                # Change to correct network driver
+      eth0 = {                                # Change to correct network driver
       #   #useDHCP = true;                         # Disabled because fixed ip
-      #   ipv4.addresses = [ {                    # Ip settings: *.0.50 for main machine
-      #     address = "192.168.0.50";
-      #     prefixLength = 24;
-      #   } ];
-      # };
+        ipv4.addresses = [ {                    # Ip settings: *.1.35 for main machine
+          address = "192.168.1.35";
+          prefixLength = 24;
+        } ];
+      };
       # wlp1s0.useDHCP = true;                   # Wireless card
+      wlan0 = {
+        # useDHCP = true;                        # Wireless card
+        ipv4.addresses = [ {                     # Ip settings: *.1.35 for main machine
+          address = "192.168.1.50";
+          prefixLength = 24;
+        } ];
+      };
       br0.ipv4.addresses = [{
-        address = "192.168.0.50";
+        address = "192.168.1.55";
         prefixLength = 24;
       } ];
     };
-    defaultGateway = "192.168.0.1";
-    nameservers = [ "192.168.0.4" "1.1.1.1"];   # Pi-Hole DNS
+    defaultGateway = "192.168.1.1";
+    # nameservers = [ "192.168.0.4" "1.1.1.1"];   # Pi-Hole DNS
     #nameservers = [ "1.1.1.1" "1.0.0.1" ];     # Cloudflare (when Pi-Hole is down)
+    # firewall = {
+    #   enable = false;
+    #   allowedTCPPorts = [ ... ];
+    #   allowedUDPPorts = [ ... ];
+    # };
   };
 
   #services.hostapd = {                          # Wifi hotspot 
   #  enable = true;
-  #  interface = "wlp1s0";
-  #  ssid = "desktop";
+  #  interface = "wlan0";
+  #  ssid = "nitro";
   #  wpaPassphrase = "<password>";
   #  extraConfig = ''
   #    bridge=br0
