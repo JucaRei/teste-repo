@@ -15,12 +15,76 @@
 { config, lib, pkgs, modulesPath, ... }:
 
 {
-  imports = [ ];
+  imports =
+    [ 
+      # (modulesPath + "/installer/scan/not-detected.nix")
+    ];
 
-  boot.initrd.availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
-  boot.kernelModules = [ "kvm-intel" "z3fold" "crc32c-intel" "lz4hc" "lz4hc_compress" "zram" ];
-  boot.extraModulePackages = [ ];
+  ### BOOT
+  boot = {
 
+    ### Kernel options
+    kernelPackages = pkgs.linuxPackages_latest;
+    # kernelPackages = config.boot.zfs.package.latestCompatibleLinuxPackages; # zfs
+    kernel.sysctl = { "vm.vfs_cache_pressure"= 500; "vm.swappiness"=100; "vm.dirty_background_ratio"=1; "vm.dirty_ratio"=50; "dev.i915.perf_stream_paranoid"=0; };
+
+    ### systemd-boot
+    # loader = {                                  # For legacy boot:
+    #   systemd-boot = {
+    #     enable = true;
+    #     configurationLimit = 5;                 # Limit the amount of configurations
+    #   };
+    #   efi.canTouchEfiVariables = true;
+    #   timeout = 6;                              # Grub auto select time
+    # };
+
+    ### Grub
+    grub = {
+      enable = true;
+      version = 2;
+      # default = 0;              # "saved";
+      device = "nodev";           # device = "/dev/sda"; or "nodev" for efi only
+      # device = "/dev/vda";      # legacy
+      efiSupport = true;
+      efiInstallAsRemovable = true;
+      configurationLimit = 5;     # do not store more than 5 gen backups
+      # zfsSupport = true;        # enable zfs
+      # copyKernels = true;       # https://nixos.wiki/wiki/NixOS_on_ZFS
+      useOSProber = false;         # check for other systems
+      fsIdentifier = "label";     # mount devices config using label
+      gfxmodeEfi = "1920x1080";
+      # gfxmodeBios = "1920x1080";
+      # trustedBoot.systemHasTPM = "YES_TPM_is_activated"
+      # trustedBoot.enable = true;
+      # extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
+      # theme = "";               # set theme
+      # enableCryptodisk = true;  # 
+    };
+    efi = {
+      efiSysMountPoint = "/boot/efi";
+      canTouchEfiVariables = false;
+    };
+    timeout = 6;
+    # zfs.requestEncryptionCredentials = true;    
+
+    ### Enable plymouth
+    plymouth = {
+      theme = "breeze";
+      enable = true;
+    };
+
+    ### Enabled filesystem
+    # supportedFilesystems = [ "vfat" "zfs" ];
+    supportedFilesystems = [ "vfat" "btrfs" ];
+
+    # initrd early load modules
+    initrd = {
+      availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
+      kernelModules = [ "i915" "nvidia" ];
+    };
+    kernelModules = [ "kvm-intel" "z3fold" "crc32c-intel" "lz4hc" "lz4hc_compress" "zram" ];
+    extraModulePackages = with config.boot.kernelPackages; [ ];
+  };
   ### BTRFS ###
   fileSystems."/" =
     { device = "/dev/disk/by-label/NIXOS";
