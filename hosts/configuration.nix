@@ -22,13 +22,13 @@ in
     (import ../modules/editors) ++          # Native doom emacs instead of nix-community flake
     (import ../modules/shell);
 
-  users.users.${user} = {                   # System User
-    isNormalUser = true;
-    uid = 1000;
-    initialPassword = "teste";
-    extraGroups = [ "wheel" "video" "audio" "camera" "networkmanager" "lp" "scanner" "kvm" "libvirtd" "plex" ];
-    shell = pkgs.zsh;                       # Default shell
-  };
+  # users.users.${user} = {                   # System User
+  #   isNormalUser = true;
+  #   uid = 1000;
+  #   initialPassword = "teste";
+  #   extraGroups = [ "wheel" "video" "audio" "camera" "networkmanager" "lp" "scanner" "kvm" "libvirtd" "plex" ];
+  #   # shell = pkgs.zsh;                       # Default shell
+  # };
 
 
   time.timeZone = "America/Sao_Paulo";        # Time zone and internationalisation
