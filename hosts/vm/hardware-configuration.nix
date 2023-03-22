@@ -91,7 +91,7 @@
   fileSystems."/" =
     { device = "/dev/disk/by-label/NIXOS";
       fsType = "btrfs";
-      options = [ "subvol=@" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
+      options = [ "subvol=@root" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
     };
 
   fileSystems."/home" =
@@ -130,7 +130,7 @@
       options = [ "rw" "defaults" "noatime" "nodiratime" ];
     };
 
-  swapDevices = [ ];
+    swapDevices = [ ];
 
   networking = {
     useDHCP = false;                        # Deprecated
