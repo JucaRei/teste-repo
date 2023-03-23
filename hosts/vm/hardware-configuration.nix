@@ -44,12 +44,14 @@
         enable = true;
         version = 2;
         # default = 0;              # "saved";
-        device = "nodev";           # device = "/dev/sda"; or "nodev" for efi only
+        devices = [ "nodev" ];      # device = "/dev/sda"; or "nodev" for efi only
         # device = "/dev/vda";      # legacy
         efiSupport = true;
         efiInstallAsRemovable = true;
         configurationLimit = 5;     # do not store more than 5 gen backups
         forceInstall = true;
+        copyKernels = true;
+        splashMode = "stretch";
         # zfsSupport = true;        # enable zfs
         # copyKernels = true;       # https://nixos.wiki/wiki/NixOS_on_ZFS
         useOSProber = false;         # check for other systems
@@ -61,16 +63,22 @@
         # extraModulePackages = [ config.boot.kernelPackages.nvidia_x11 ];
         # theme = "";               # set theme
         # enableCryptodisk = true;  # 
-      };
-    
-      efi = {
-        efiSysMountPoint = "/boot/efi";
-        # canTouchEfiVariables = false;
-        canTouchEfiVariables = true;
+        extraEntries = ''
+          menuentry "Reboot" {
+            reboot
+          }
+          menuentry "Poweroff" {
+            halt
+          }
+        '';
       };
       timeout = 6;
-    # zfs.requestEncryptionCredentials = true;    
     };
+    efi = {
+      efiSysMountPoint = "/boot/efi";
+      canTouchEfiVariables = false;
+    };
+      
     ### Enable plymouth
     plymouth = {
       theme = "breeze";
@@ -88,6 +96,7 @@
     };
     kernelModules = [ "kvm-intel" "z3fold" "crc32c-intel" "lz4hc" "lz4hc_compress" "zram" ];
     extraModulePackages = with config.boot.kernelPackages; [ ];
+    # zfs.requestEncryptionCredentials = true;  
   };
 
   ### BTRFS ###
