@@ -74,7 +74,7 @@
       };
       timeout = 6;
       efi = {
-        efiSysMountPoint = "/boot/efi";
+        efiSysMountPoint = "/mnt/boot/efi";
         canTouchEfiVariables = false;
       };
     };
