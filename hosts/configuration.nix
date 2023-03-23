@@ -211,7 +211,7 @@ in
     '';
   };
    nixpkgs.config = {
-    allowUnsupportedSystem = true; # For permanently allowing unsupported packages to be built.
+    # allowUnsupportedSystem = true; # For permanently allowing unsupported packages to be built.
     allowUnfree = true; # unfree packages
     # allowUnfreePredicate = pkg: builtins.elem (lib.getName pkg) [   # allow only selected unfree packages
     #   "roon-server"

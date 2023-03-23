@@ -63,7 +63,7 @@
       };
     
       efi = {
-        efiSysMountPoint = "/mnt/boot/efi";
+        efiSysMountPoint = "/boot/efi";
         canTouchEfiVariables = false;
       };
       timeout = 6;
@@ -82,7 +82,7 @@
     # initrd early load modules
     initrd = {
       availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
-      kernelModules = [ "i915" "nvidia" ];
+      # kernelModules = [ "i915" "nvidia" ];
     };
     kernelModules = [ "kvm-intel" "z3fold" "crc32c-intel" "lz4hc" "lz4hc_compress" "zram" ];
     extraModulePackages = with config.boot.kernelPackages; [ ];
@@ -106,11 +106,11 @@
       options = [ "subvol=@snapshots" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
     };
 
-  fileSystems."/swap" =
-    { device = "/dev/disk/by-label/NIXOS";
-      fsType = "btrfs";
-      options = [ "subvol=@swap" ];
-    };
+  # fileSystems."/swap" =
+  #   { device = "/dev/disk/by-label/NIXOS";
+  #     fsType = "btrfs";
+  #     options = [ "subvol=@swap" ];
+  #   };
 
   fileSystems."/var/tmp" =
     { device = "/dev/disk/by-label/NIXOS";
