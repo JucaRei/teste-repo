@@ -201,8 +201,8 @@ in
       dates = "weekly";
       options = "--delete-older-than 2d";
     };
-    # package = pkgs.nixVersions.unstable;    # Enable nixFlakes on system
-    package = pkgs.nixVersions.stable;    # Enable nixFlakes on system
+    package = pkgs.nixVersions.unstable;    # Enable nixFlakes on system
+    # package = pkgs.nixVersions.stable;    # Enable nixFlakes on system
     registry.nixpkgs.flake = inputs.nixpkgs;
     extraOptions = ''
       experimental-features = nix-command flakes
@@ -240,8 +240,8 @@ in
     autoUpgrade = {                         # Allow auto update (not useful in flakes)
       enable = true;
       # operation = "switch";
-      # channel = "https://nixos.org/channels/nixos-unstable";
-      channel = "https://nixos.org/channels/nixos-22.11";
+      channel = "https://nixos.org/channels/nixos-unstable";
+      # channel = "https://nixos.org/channels/nixos-22.11";
       dates = "22:00";
       flags = [
         "--update-input" "nixpkgs" "--commit-lock-file" 

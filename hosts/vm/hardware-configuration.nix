@@ -93,6 +93,7 @@
     initrd = {
       availableKernelModules = [ "ahci" "xhci_pci" "virtio_pci" "sr_mod" "virtio_blk" ];
       # kernelModules = [ "i915" "nvidia" ];
+      checkJournalingFS = false;  # for vm
     };
     kernelModules = [ "kvm-intel" "z3fold" "crc32c-intel" "lz4hc" "lz4hc_compress" "zram" ];
     extraModulePackages = with config.boot.kernelPackages; [ ];
