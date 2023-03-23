@@ -73,10 +73,10 @@
         '';
       };
       timeout = 6;
-    };
-    efi = {
-      efiSysMountPoint = "/boot/efi";
-      canTouchEfiVariables = false;
+      efi = {
+        efiSysMountPoint = "/boot/efi";
+        canTouchEfiVariables = false;
+      };
     };
       
     ### Enable plymouth
