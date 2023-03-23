@@ -62,10 +62,10 @@
         # enableCryptodisk = true;  # 
       };
     
-      efi = {
-        efiSysMountPoint = "/boot/efi";
-        canTouchEfiVariables = false;
-      };
+      # efi = {
+      #   efiSysMountPoint = "/boot/efi";
+      #   canTouchEfiVariables = false;
+      # };
       timeout = 6;
     # zfs.requestEncryptionCredentials = true;    
     };
