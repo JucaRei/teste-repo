@@ -239,7 +239,7 @@ in
   system = {                                # NixOS settings
     autoUpgrade = {                         # Allow auto update (not useful in flakes)
       enable = true;
-      operation = "switch";
+      # operation = "switch";
       # channel = "https://nixos.org/channels/nixos-unstable";
       channel = "https://nixos.org/channels/nixos-22.11";
       dates = "22:00";

@@ -49,6 +49,7 @@
         efiSupport = true;
         efiInstallAsRemovable = true;
         configurationLimit = 5;     # do not store more than 5 gen backups
+        forceInstall = true;
         # zfsSupport = true;        # enable zfs
         # copyKernels = true;       # https://nixos.wiki/wiki/NixOS_on_ZFS
         useOSProber = false;         # check for other systems
@@ -62,10 +63,11 @@
         # enableCryptodisk = true;  # 
       };
     
-      # efi = {
-      #   efiSysMountPoint = "/boot/efi";
-      #   canTouchEfiVariables = false;
-      # };
+      efi = {
+        efiSysMountPoint = "/boot/efi";
+        # canTouchEfiVariables = false;
+        canTouchEfiVariables = true;
+      };
       timeout = 6;
     # zfs.requestEncryptionCredentials = true;    
     };
@@ -87,6 +89,7 @@
     kernelModules = [ "kvm-intel" "z3fold" "crc32c-intel" "lz4hc" "lz4hc_compress" "zram" ];
     extraModulePackages = with config.boot.kernelPackages; [ ];
   };
+
   ### BTRFS ###
   fileSystems."/" =
     { device = "/dev/disk/by-label/NIXOS";
@@ -105,12 +108,6 @@
       fsType = "btrfs";
       options = [ "subvol=@snapshots" "rw" "noatime" "ssd" "compress-force=zstd:15" "space_cache=v2" "commit=120" "autodefrag" "discard=async" ];
     };
-
-  # fileSystems."/swap" =
-  #   { device = "/dev/disk/by-label/NIXOS";
-  #     fsType = "btrfs";
-  #     options = [ "subvol=@swap" ];
-  #   };
 
   fileSystems."/var/tmp" =
     { device = "/dev/disk/by-label/NIXOS";
@@ -133,7 +130,7 @@
     swapDevices = [ ];
 
   networking = {
-    useDHCP = false;                        # Deprecated
+    # useDHCP = false;                        # Deprecated
     hostName = "vm";
     # interfaces = {
     #   enp1s0.useDHCP = true;
