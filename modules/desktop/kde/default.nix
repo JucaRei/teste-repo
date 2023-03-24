@@ -18,7 +18,7 @@
     xserver = {
       enable = true;
 
-      layout = "br";                              # Keyboard layout & €-sign
+      layout = "us";                              # Keyboard layout & €-sign
       # xkbOptions = "eurosign:e";
       libinput.enable = true;
       # modules = [ pkgs.xf86_input_wacom ];        # Both needed for wacom tablet usage
